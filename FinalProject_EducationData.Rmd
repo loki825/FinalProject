@@ -1,0 +1,29 @@
+---
+title: "FinalProject on Education Data"
+author: "Lokesh Babu Rayadurgam"
+date: "1 April 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#I preferred this data due to below scenario:
+#Education is an important medium of acquiring essential knowledge and skills. 
+#It is more than just learning from books. It is an effort of the older generation to transfer their life wisdom to their offspring. 
+#Once the project is at final stage,I will be able to explain the use of data extracting, formatting of the data and accessing with different packages.
+
+```{r}
+library(rvest)
+library(plyr)
+library(lubridate)
+library(ggplot2)
+
+datalink <- read.csv("https://raw.githubusercontent.com/loki825/FinalProject/master/Most-Recent-Cohorts-Scorecard-Elements.csv",header=TRUE, sep=",")
+data <- data.frame(datalink)
+data
+
+```
+
+
