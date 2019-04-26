@@ -1,0 +1,173 @@
+---
+title: "FinalProject on Education Data"
+author: "Lokesh Babu Rayadurgam"
+date: "1 April 2019"
+output: html_document
+---
+
+#I preferred this data due to below scenario:
+#Education is an important medium of acquiring essential knowledge and skills. 
+#It is more than just learning from books. It is an effort of the older generation to transfer their life wisdom to their offspring. 
+#Once the project is at final stage,I will be able to explain the use of data extracting, formatting of the data and accessing with different packages.
+
+```{r}
+library(rvest)
+library(plyr)
+library(lubridate)
+library(ggplot2)
+
+datalink <- read.csv("https://raw.githubusercontent.com/loki825/FinalProject/master/Most-Recent-Cohorts-Scorecard-Elements.csv",header=TRUE, sep=",")
+data <- data.frame(datalink)
+#data
+#data = data.dropna(how='any',axis=0)
+#names(data)
+data1<-data[1:8]
+data2<-data[86:95]
+datafinal<-cbind(data1,data2)
+datafinal<-datafinal[1:500,]
+sam<- grepl("UGDS_WHITE",names(datafinal))
+datafinal[sam]<-lapply(datafinal[sam], function(x) replace (x,x %in% "NULL", NA))
+datafinal
+any(is.na(datafinal))
+datafinal<-data.frame(na.omit(datafinal))
+
+any(is.na(datafinal))
+
+datafinal$Undergrads<-as.numeric(datafinal$UGDS)
+datafinal$ug_white<-as.numeric(datafinal$UGDS_WHITE)
+datafinal$ug_Asian<-as.numeric(datafinal$UGDS_ASIAN)
+datafinal$ug_Black<-as.numeric(datafinal$UGDS_BLACK)
+datafinal$ug_unkn<-as.numeric(datafinal$UGDS_UNKN)
+
+ggplot(datafinal, aes(x=Undergrads,y=ug_white))+geom_point()+geom_smooth(method=lm,se=FALSE, color="black")
+values<-lm(ug_white~Undergrads,data=datafinal)
+coef(values)
+summary(values)
+datafinal$predictedValues<-predict(values)
+datafinal$residualValues<-residuals(values)
+#plotting  linear regression and residual values 
+ggplot(datafinal,aes(x=Undergrads,y=ug_white))+geom_smooth(method=lm,se=FALSE,color="grey")+geom_segment(aes(xend=Undergrads,yend=predictedValues),alpha=0.2)+geom_point(aes(color=abs(residualValues)))+scale_color_continuous(low="red",high="blue")+guides(color=FALSE)+geom_point(aes(y=predictedValues),shape=1)
+theme_bw()
+
+```
+
+```{r}
+library(rvest)
+library(plyr)
+library(lubridate)
+library(ggplot2)
+
+datalink <- read.csv("https://raw.githubusercontent.com/loki825/FinalProject/master/Most-Recent-Cohorts-Scorecard-Elements.csv",header=TRUE, sep=",")
+data <- data.frame(datalink)
+#data
+#data = data.dropna(how='any',axis=0)
+#names(data)
+data1<-data[1:8]
+data2<-data[86:95]
+datafinal<-cbind(data1,data2)
+datafinal<-datafinal[1:500,]
+sam<- grepl("UGDS_WHITE",names(datafinal))
+datafinal[sam]<-lapply(datafinal[sam], function(x) replace (x,x %in% "NULL", NA))
+datafinal
+any(is.na(datafinal))
+datafinal<-data.frame(na.omit(datafinal))
+
+any(is.na(datafinal))
+
+datafinal$Undergrads<-as.numeric(datafinal$UGDS)
+datafinal$ug_white<-as.numeric(datafinal$UGDS_WHITE)
+datafinal$ug_Asian<-as.numeric(datafinal$UGDS_ASIAN)
+datafinal$ug_Black<-as.numeric(datafinal$UGDS_BLACK)
+datafinal$ug_unkn<-as.numeric(datafinal$UGDS_UNKN)
+
+ggplot(datafinal, aes(x=Undergrads,y=ug_Asian))+geom_point()+geom_smooth(method=lm,se=FALSE, color="black")
+values1<-lm(ug_Asian~Undergrads,data=datafinal)
+coef(values1)
+summary(values1)
+datafinal$predictedValues1<-predict(values1)
+datafinal$residualValues1<-residuals(values1)
+#plotting  linear regression and residual values 
+ggplot(datafinal,aes(x=Undergrads,y=ug_Asian))+geom_smooth(method=lm,se=FALSE,color="grey")+geom_segment(aes(xend=Undergrads,yend=predictedValues1),alpha=0.2)+geom_point(aes(color=abs(residualValues1)))+scale_color_continuous(low="red",high="blue")+guides(color=FALSE)+geom_point(aes(y=predictedValues1),shape=1)
+theme_bw()
+```
+
+```{r}
+library(rvest)
+library(plyr)
+library(lubridate)
+library(ggplot2)
+
+datalink <- read.csv("https://raw.githubusercontent.com/loki825/FinalProject/master/Most-Recent-Cohorts-Scorecard-Elements.csv",header=TRUE, sep=",")
+data <- data.frame(datalink)
+#data
+#data = data.dropna(how='any',axis=0)
+#names(data)
+data1<-data[1:8]
+data2<-data[86:95]
+datafinal<-cbind(data1,data2)
+datafinal<-datafinal[1:500,]
+sam<- grepl("UGDS_WHITE",names(datafinal))
+datafinal[sam]<-lapply(datafinal[sam], function(x) replace (x,x %in% "NULL", NA))
+datafinal
+any(is.na(datafinal))
+datafinal<-data.frame(na.omit(datafinal))
+
+any(is.na(datafinal))
+
+datafinal$Undergrads<-as.numeric(datafinal$UGDS)
+datafinal$ug_white<-as.numeric(datafinal$UGDS_WHITE)
+datafinal$ug_Asian<-as.numeric(datafinal$UGDS_ASIAN)
+datafinal$ug_Black<-as.numeric(datafinal$UGDS_BLACK)
+datafinal$ug_unkn<-as.numeric(datafinal$UGDS_UNKN)
+
+ggplot(datafinal, aes(x=Undergrads,y=ug_Black))+geom_point()+geom_smooth(method=lm,se=FALSE, color="black")
+values2<-lm(ug_Black~Undergrads,data=datafinal)
+coef(values2)
+summary(values2)
+datafinal$predictedValues2<-predict(values2)
+datafinal$residualValues2<-residuals(values2)
+ 
+ggplot(datafinal,aes(x=Undergrads,y=ug_Black))+geom_smooth(method=lm,se=FALSE,color="grey")+geom_segment(aes(xend=Undergrads,yend=predictedValues2),alpha=0.2)+geom_point(aes(color=abs(residualValues2)))+scale_color_continuous(low="red",high="blue")+guides(color=FALSE)+geom_point(aes(y=predictedValues2),shape=1)
+theme_bw()
+```
+
+```{r}
+library(rvest)
+library(plyr)
+library(lubridate)
+library(ggplot2)
+
+datalink <- read.csv("https://raw.githubusercontent.com/loki825/FinalProject/master/Most-Recent-Cohorts-Scorecard-Elements.csv",header=TRUE, sep=",")
+data <- data.frame(datalink)
+#data
+#data = data.dropna(how='any',axis=0)
+#names(data)
+data1<-data[1:8]
+data2<-data[86:95]
+datafinal<-cbind(data1,data2)
+datafinal<-datafinal[1:500,]
+sam<- grepl("UGDS_WHITE",names(datafinal))
+datafinal[sam]<-lapply(datafinal[sam], function(x) replace (x,x %in% "NULL", NA))
+datafinal
+any(is.na(datafinal))
+datafinal<-data.frame(na.omit(datafinal))
+
+any(is.na(datafinal))
+
+datafinal$Undergrads<-as.numeric(datafinal$UGDS)
+datafinal$ug_white<-as.numeric(datafinal$UGDS_WHITE)
+datafinal$ug_Asian<-as.numeric(datafinal$UGDS_ASIAN)
+datafinal$ug_Black<-as.numeric(datafinal$UGDS_BLACK)
+datafinal$ug_unkn<-as.numeric(datafinal$UGDS_UNKN)
+
+ggplot(datafinal, aes(x=Undergrads,y=ug_unkn))+geom_point()+geom_smooth(method=lm,se=FALSE, color="black")
+values3<-lm(ug_unkn~Undergrads,data=datafinal)
+coef(values3)
+summary(values3)
+datafinal$predictedValues3<-predict(values3)
+datafinal$residualValues3<-residuals(values3)
+#plotting  linear regression and residual values 
+ggplot(datafinal,aes(x=Undergrads,y=ug_unkn))+geom_smooth(method=lm,se=FALSE,color="grey")+geom_segment(aes(xend=Undergrads,yend=predictedValues3),alpha=0.2)+geom_point(aes(color=abs(residualValues3)))+scale_color_continuous(low="red",high="blue")+guides(color=FALSE)+geom_point(aes(y=predictedValues3),shape=1)
+theme_bw()
+```
+
