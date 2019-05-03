@@ -1,0 +1,73 @@
+#I preferred this data due to below scenario:
+#Education is an important medium of acquiring essential knowledge and skills. 
+#It is more than just learning from books. It is an effort of the older generation to transfer their life wisdom to their offspring. 
+#Once the project is at final stage,I will be able to explain the use of data extracting, formatting of the data and accessing with different packages.
+# In this project i had extracted the dat from csv files and formatted by removing all N/A values in a data frame.
+# In this i have analyzed the ungrads students who belongs different cultures.predictors which i have choosen ug_Asian,g_black, ug_white, ug_unkn and dependent variable is ungrads.
+#Estimating undergrads  growth graph basing on people related to different categories.
+#I have used shiny app in order to make interactive application.renderPlot and renderText are also used. 
+
+shinyServer(function(input, output){
+  
+  model <- lm(Undergrads~ug_white+ug_Asian+ug_Black+ug_unkn,data=datafinal)
+  
+  prediction <- reactive({
+    
+          frstInput <- input$slider1
+          secondInput <- input$slider2
+          thirdInput<- input$slider3
+          fourthInput <- input$slider4
+  
+  predict(model, newdata = data.frame(ug_white = frstInput,
+                                      ug_Asian = secondInput, 
+                                      ug_Black = thirdInput,
+                                      ug_unkn = fourthInput))
+  
+  })
+  grads <- reactive({
+    
+    frstInput <- input$slider1
+    secondInput <- input$slider2
+    thirdInput<- input$slider3
+    fourthInput <- input$slider4
+    
+  })
+  
+  
+      output$My_Plot <- renderPlot(
+          ggplot(datafinal,aes(x=ug_white+ug_Asian+ug_Black+ug_unkn,y= residualValues3))+
+          geom_smooth(method=lm,se=FALSE,color="grey")+
+          geom_segment(aes(xend=ug_white+ug_Asian+ug_Black+ug_unkn,yend=residualValues3),alpha=0.2)+
+          geom_point(aes(color=abs(residualValues3)))+scale_color_continuous(low="red",high="blue")+
+          guides(color=FALSE)+geom_point(aes(y=predictedValues3),shape=1)+geom_point(aes(x=grads(),y=0), color = "Dark Green",size=7)
+        
+        
+      )
+      
+      output$pred1 <- renderText(
+        
+        prediction()
+      )
+})
+////////////////////////////////////////////////////////////////////////////////////////////
+
+shinyUI(fluidPage(
+  
+  sidebarLayout(
+    
+    sidebarPanel(
+      
+      sliderInput("slider1","select the value:", -1400,1400,10,10),
+      sliderInput("slider2","select the value:", -1400,1400,10,10),
+      sliderInput("slider3","select the value:", -1400,1400,10,10),
+      sliderInput("slider4","select the value:", -1400,1400,10,10)
+    ),
+    mainPanel(
+      
+      plotOutput("My_Plot"),
+      h4("predicted Value"),
+      textOutput("pred1")
+    )
+  )
+)
+)
